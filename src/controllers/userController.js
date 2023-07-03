@@ -1,7 +1,5 @@
 const userschema = require("../models/userModel");
 const bcrypt = require("bcrypt");
-const path = require("path");
-const multer = require("multer");
 const jwt = require("jsonwebtoken");
 
 const signUp = async (req, res, next) => {
@@ -21,13 +19,17 @@ const signUp = async (req, res, next) => {
       if (user) {
         throw { status: 400, message: "Admin already exist" };
       }
+
       req.body.profile_pic = req?.file
         ? req.file.buffer.toString("base64")
         : null;
+
       const newAdmin = await userschema.create(req.body);
+
       res.status(200).json(newAdmin);
     } else {
       const user = await userschema.findOne({ email });
+
       console.log("user", user);
       if (user) {
         throw { status: 400, message: "User already exist" };
@@ -120,11 +122,11 @@ const login = async (req, res, next) => {
     if (!user) {
       throw { status: 400, message: "User not found" };
     }
-    console.log("result", password, user.password);
+    // console.log("result", password, user.password);
 
     const result = await bcrypt.compare(password, user.password);
 
-    console.log("result", result);
+    // console.log("result", result);
     if (!result) {
       throw { status: 400, message: "invalid credential" };
     }
@@ -140,8 +142,3 @@ const login = async (req, res, next) => {
 };
 
 module.exports = { signUp, getUser, updateUser, deleteUser, login };
-
-// doubt
-// how to use image in frontend
-// how to send response with or without profile_pic
-// clustor,fork and spwan ,emit,child process
