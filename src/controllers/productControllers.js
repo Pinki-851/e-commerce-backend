@@ -71,6 +71,7 @@ const updateProductDetail = async (req, res, next) => {
     }
 
     // console.log("user", user, product);
+
     // console.log(
     //   "check-condition",
     //   user.role === "USER",
@@ -78,6 +79,7 @@ const updateProductDetail = async (req, res, next) => {
     //   user._id,
     //   product.user_id
     // );
+
     // why === not working
     if (user.role === "USER" || id != product.user_id) {
       throw {
@@ -94,6 +96,15 @@ const updateProductDetail = async (req, res, next) => {
     }
   } catch (error) {
     console.log("product-update", error);
+    next(error);
+  }
+};
+
+const deleteProduct = async (req, res, error) => {
+  try {
+    console.log("deleteProduct");
+  } catch (error) {
+    console.log("delete-product", error);
     next(error);
   }
 };
