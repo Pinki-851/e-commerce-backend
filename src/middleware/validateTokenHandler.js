@@ -4,6 +4,7 @@ const validateToken = async (req, res, next) => {
   try {
     let token;
     let authHeader = req.headers.authorization || req.headers.Authorization;
+    // console.log("authHeader", authHeader);
     if (!authHeader) {
       throw { status: 400, message: "auth header not found" };
     }
@@ -19,7 +20,7 @@ const validateToken = async (req, res, next) => {
       }
       req.decoded_user = decoded.data;
 
-      console.log("decode", decoded);
+      // console.log("decode", decoded);
       next();
     });
   } catch (err) {
