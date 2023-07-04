@@ -100,16 +100,36 @@ const updateProductDetail = async (req, res, next) => {
   }
 };
 
-const deleteProduct = async (req, res, error) => {
+const deleteProduct = async (req, res, next) => {
   try {
-    console.log("deleteProduct");
+    const userID = req.decoded_user.userId;
+    const productId = req.params.id;
+    const user = await userschema.findOne({ _id: userID });
+    const product = await productschema.findById({ _id: productId });
+
+    if (user.role === "USER" || userID != product.user_id) {
+      throw {
+        staus: 401,
+        message: "you are not autorized to perform this action",
+      };
+    } else {
+      const deleteProduct = await productschema.findOneAndDelete({
+        _id: productId,
+      });
+      res.status(200).json({ deleteProduct, message: "deleted successfully" });
+    }
   } catch (error) {
     console.log("delete-product", error);
     next(error);
   }
 };
 
-module.exports = { addProducts, viewProducts, updateProductDetail };
+module.exports = {
+  addProducts,
+  viewProducts,
+  updateProductDetail,
+  deleteProduct,
+};
 
 // admin1=clothes
 // admin2=hardware
