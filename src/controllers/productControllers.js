@@ -70,8 +70,6 @@ const updateProductDetail = async (req, res, next) => {
       req.body.image = image;
     }
 
-    // console.log("user", user, product);
-
     // console.log(
     //   "check-condition",
     //   user.role === "USER",
